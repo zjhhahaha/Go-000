@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"golang.org/x/sync/errgroup"
 
@@ -27,9 +25,6 @@ func main() {
 	})
 	g.Go(func() error {
 		return StartMetrics(shutdownServiceCtx, logger, errChan)
-	})
-	g.Go(func() error {
-		return ErrOccur(errChan)
 	})
 	go func() {
 		signals := make(chan os.Signal, 10)
@@ -79,10 +74,4 @@ func StartMetrics(ctx context.Context, logger log.Logger, errChan chan error) er
 	<-ctx.Done()
 	level.Info(logger).Log("msg", "service shutdown")
 	return server.Shutdown(context.Background())
-}
-
-func ErrOccur(errChan chan error) error {
-	time.Sleep(2 * time.Second)
-	errChan <- errors.New("error")
-	return nil
 }
