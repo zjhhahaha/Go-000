@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package account;
+option go_package = "demo/api/account;account";
+
+
+// The greeting service definition.
+service AccountService {
+    // Sends a greeting
+    rpc GetAccountByID (GetAccountByIDRequest) returns (GetAccountByIDReply) {
+    }
+}
+
+// The request message containing the user's name.
+message GetAccountByIDRequest {
+    int64 id = 1;
+}
+  
+// The response message containing the greetings
+message GetAccountByIDReply {
+    string name = 1;
+    bool sex = 2;
+    int64 age = 3;
+    string address = 4;
+}
